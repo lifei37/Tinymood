@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lifei.mood.mapper.VerifyContentTableMapper">
+    <resultMap id="getVerifyContent" type="com.lifei.mood.entity.VerifyContentTable">
+        <id property="vId" column="v_id"></id>
+        <result property="vUserId" column="v_user_id"></result>
+        <result property="vCollectUserId" column="v_collect_user_id"></result>
+        <result property="vSendContent" column="v_send_content"></result>
+        <result property="vSendTime" column="v_send_time"></result>
+
+        <association property="user" javaType="com.lifei.mood.entity.UserInfo">
+            <id property="id" column="id"></id>
+            <result property="avatar" column="avatar"></result>
+            <result property="userName" column="username"></result>
+            <result property="nickName" column="nickname"></result>
+        </association>
+    </resultMap>
+        <insert id="addVerifyContent">
+            insert into verify_content_table(v_user_id, v_collect_user_id, v_send_time, v_send_content) values
+            (#{userId}, #{collectUserId}, #{sendTime}, #{content})
+        </insert>
+
+        <select id="getVerifyContents" resultMap="getVerifyContent">
+            select * from verify_content_table v, user_info u  where v.v_user_id=u.id and
+             v_collect_user_id = #{userId}
+        </select>
+</mapper>

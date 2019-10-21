@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lifei.mood.mapper.FriendsTableMapper">
+    <resultMap id="getFriend" type="com.lifei.mood.entity.message.FriendsTable">
+        <id property="fId" column="f_id"></id>
+
+        <result property="fFriendId" column="f_friend_id"></result>
+        <result property="fUserId" column="f_user_id"></result>
+        <result property="fNickName" column="f_nickname"></result>
+        <result property="fAddTime" column="f_add_time"></result>
+        <association property="user" javaType="com.lifei.mood.entity.UserInfo">
+            <id property="id" column="id"></id>
+            <id property="avatar" column="avatar"></id>
+            <id property="userName" column="username"></id>
+            <id property="nickName" column="nickname"></id>
+        </association>
+    </resultMap>
+
+    <select id="getFriends" resultMap="getFriend">
+        select * from friends_table f, user_info u where f.f_friend_id=u.id and f_user_id=#{userId}
+    </select>
+
+    <insert id="userAddFriend">
+        insert into friends_table(f_friend_id,f_user_id,f_nickname,f_add_time)values
+        (#{friendId},#{userId},#{friendNickName},#{addTime})
+    </insert>
+
+    <insert id="friendAddUser">
+        insert into friends_table(f_friend_id,f_user_id,f_nickname,f_add_time)values
+        (#{userId},#{friendId},#{nickName},#{addTime})
+    </insert>
+
+</mapper>

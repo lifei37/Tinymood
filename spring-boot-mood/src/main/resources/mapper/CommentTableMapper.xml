@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lifei.mood.mapper.CommentTableMapper">
+    <resultMap id="getComments" type="com.lifei.mood.entity.CommentTable">
+        <id property="id" column="cid"></id>
+        <result property="userId" column="user_id"></result>
+        <result property="comment" column="comment"></result>
+        <result property="addTime" column="add_time"></result>
+        <result property="essayId" column="essay_id"></result>
+        <result property="parentCommentId" column="parent_comment_id"></result>
+
+        <association property="user" javaType="com.lifei.mood.entity.UserInfo">
+            <id property="id" column="id"></id>
+            <id property="avatar" column="avatar"></id>
+            <id property="userName" column="username"></id>
+            <id property="nickName" column="nickname"></id>
+        </association>
+    </resultMap>
+
+    <select id="getComments" resultMap="getComments">
+        select * from comment_table c, user_info u where c.user_id = u.id and c.essay_id=#{essayId}
+        order by c.add_time desc
+    </select>
+    <insert id="addComment">
+        insert into comment_table (user_id,comment,essay_id,add_time) values (#{userId},#{comment},
+        #{essayId},#{addTime})
+    </insert>
+
+</mapper>

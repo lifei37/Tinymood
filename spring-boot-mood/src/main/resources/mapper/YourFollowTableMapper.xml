@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lifei.mood.mapper.YourFollowTableMapper">
+    <resultMap id="getFollowEssays" type="com.lifei.mood.entity.YourFollowTable">
+        <id property="aId" column="a_id"></id>
+        <result property="aFollowUserId" column="a_follow_user_id"></result>
+        <result property="aUserId" column="a_user_id"></result>
+        <result property="aFollowTime" column="a_follow_time"></result>
+
+        <collection property="essay" ofType="com.lifei.mood.entity.InformalEssay">
+            <id property="id" column="eid"></id>
+            <result property="userId" column="user_id"></result>
+            <result property="content" column="content"></result>
+            <result property="publishTime" column="publish_time"></result>
+            <result property="content" column="content"></result>
+            <result property="agreeNums" column="agree_nums"></result>
+            <result property="commentNums" column="comment_nums"></result>
+            <result property="picture" column="picture"></result>
+            <result property="publishAddress" column="publish_address"></result>
+            <result property="isVisible" column="is_visible"></result>
+            <association property="user" javaType="com.lifei.mood.entity.UserInfo">
+                <id property="id" column="id"></id>
+                <result property="avatar" column="avatar"></result>
+                <result property="userName" column="username"></result>
+                <result property="nickName" column="nickname"></result>
+            </association>
+        </collection>
+    </resultMap>
+
+    <resultMap id="getFollowLists" type="com.lifei.mood.entity.YourFollowTable">
+        <id property="aId" column="a_id"></id>
+        <result property="aFollowUserId" column="a_follow_user_id"></result>
+        <result property="aUserId" column="a_user_id"></result>
+        <result property="aFollowTime" column="a_follow_time"></result>
+
+        <association property="user" javaType="com.lifei.mood.entity.UserInfo">
+            <id property="id" column="id"></id>
+            <result property="avatar" column="avatar"></result>
+            <result property="userName" column="username"></result>
+            <result property="nickName" column="nickname"></result>
+        </association>
+    </resultMap>
+
+
+
+    <select id="getFollowEssay" resultMap="getFollowEssays">
+        select y.*,u.*,i.id eid,i.user_id,i.content,i.publish_time,i.agree_nums,i.comment_nums,i.picture,i.is_visible
+         from your_follow_table y left join user_info u on y.a_follow_user_id = u.id left join
+        informal_essay i on y.a_follow_user_id = i.user_id where
+         y.a_user_id=#{userId} and i.is_visible=0 order by i.publish_time desc
+    </select>
+
+    <select id="getFollowList" resultMap="getFollowLists">
+        select * from your_follow_table y, user_info u where y.a_follow_user_id = u.id and y.a_user_id=#{userId}
+    </select>
+
+    <insert id="addFollow">
+        insert into your_follow_table(a_follow_user_id,a_user_id,a_follow_time) values
+        ( #{followUserId},#{userId}, #{followTime})
+    </insert>
+
+</mapper>

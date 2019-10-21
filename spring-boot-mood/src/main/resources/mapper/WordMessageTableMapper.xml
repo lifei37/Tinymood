@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lifei.mood.mapper.WordMessageTableMapper">
+    <resultMap id="getWordMessage" type="com.lifei.mood.entity.message.WordMessageTable">
+        <id property="wmId" column="wm_id"></id>
+
+        <result property="wmMessage" column="wm_message"></result>
+        <result property="wmStatus" column="wm_status"></result>
+        <result property="wmFromUserId" column="wm_from_user_id"></result>
+        <result property="wmSenTime" column="wm_send_time"></result>
+        <result property="wmMessageTypeId" column="wm_message_type_id"></result>
+
+        <association property="user" javaType="com.lifei.mood.entity.UserInfo">
+            <id property="id" column="id"></id>
+            <result property="avatar" column="avatar"></result>
+            <result property="userName" column="username"></result>
+            <result property="nickName" column="nickname"></result>
+        </association>
+    </resultMap>
+<insert id="insertWordMessage">
+    insert into word_message_table (wm_message, wm_send_time,wm_from_user_id) values
+    (#{textMessage},#{sendTime},#{userId})
+</insert>
+
+    <select id="selectWordMessage" resultMap="getWordMessage">
+        select * from word_message_table w, user_info u where w.wm_from_user_id = u.id
+        order by w.wm_send_time desc limit 20
+    </select>
+</mapper>

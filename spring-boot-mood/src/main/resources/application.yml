@@ -1,0 +1,28 @@
+
+server:
+  port: 8000
+
+spring:
+  datasource:
+
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/mood?serverTimezone=UTC
+    username: root
+    password: 123456
+    type: com.alibaba.druid.pool.DruidDataSource
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  thymeleaf:
+    cache: false
+
+
+mybatis:
+  config-location: classpath:mapper/config/mybatis-config.xml
+  type-aliases-package: com.lifei.mood.entity
+  mapper-locations: classpath:mapper/*.xml
+
+logging:
+  level:
+    com.lifei.mood.mapper: debug
+

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="com.lifei.mood.mapper.InformalEssayMapper">
+    <resultMap id="getInformalEssay" type="com.lifei.mood.entity.InformalEssay">
+        <id property="id" column="eid"></id>
+        <result property="userId" column="user_id"></result>
+        <result property="content" column="content"></result>
+        <result property="publishTime" column="publish_time"></result>
+        <result property="content" column="content"></result>
+        <result property="agreeNums" column="agree_nums"></result>
+        <result property="commentNums" column="comment_nums"></result>
+        <result property="picture" column="picture"></result>
+        <result property="publishAddress" column="publish_address"></result>
+        <result property="isVisible" column="is_visible"></result>
+
+        <association property="user" javaType="com.lifei.mood.entity.UserInfo">
+            <id property="id" column="id"></id>
+            <result property="avatar" column="avatar"></result>
+            <result property="userName" column="username"></result>
+            <result property="nickName" column="nickname"></result>
+        </association>
+    </resultMap>
+
+    <select id="getEssays" resultMap="getInformalEssay">
+        select  u.*,i.id eid,i.user_id,i.content,i.publish_time,i.agree_nums,i.comment_nums,i.picture,i.is_visible
+         from user_info u , informal_essay i where u.id = i.user_id and i.is_visible=0 order by i.publish_time desc
+    </select>
+
+    <update id="addAgree">
+        update informal_essay set agree_nums=agree_nums+1 where id = #{essayId}
+    </update>
+    <update id="subAgree">
+        update informal_essay set agree_nums=agree_nums-1 where id = #{essayId}
+    </update>
+
+    <update id="addCommentNum">
+        update informal_essay set comment_nums=comment_nums+1 where id = #{essayId}
+    </update>
+
+    <select id="getPersonEssays" resultMap="getInformalEssay">
+        select  u.*,i.id eid,i.user_id,i.content,i.publish_time,i.agree_nums,i.comment_nums,i.picture,i.is_visible
+         from user_info u , informal_essay i where u.id = i.user_id and i.is_visible=0 and u.id =#{id}
+          order by i.publish_time desc
+    </select>
+
+    <insert id="addEssay">
+        insert into informal_essay(user_id, content, publish_time) values(#{userId},#{content},#{publishTime})
+    </insert>
+
+    <select id="countEssay" resultType="java.lang.Integer">
+        select count(*) from informal_essay where user_id = #{userId}
+    </select>
+
+    <select id="getHeatTop10" resultMap="getInformalEssay">
+        select  u.*,i.id eid,i.user_id,i.content,i.publish_time,i.agree_nums,i.comment_nums,i.picture,i.is_visible
+         from user_info u , informal_essay i where u.id = i.user_id and i.is_visible=0 order by i.agree_nums desc
+         limit 10
+    </select>
+
+</mapper>

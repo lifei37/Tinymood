@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="com.lifei.mood.mapper.UserInfoMapper">
+    <resultMap id="userBaseInfo" type="com.lifei.mood.entity.UserInfo">
+        <id property="id" column="id"></id>
+        <result property="userName" column="username"></result>
+        <result property="nickName" column="nickname"></result>
+        <result property="password" column="password"></result>
+        <result property="addTime" column="add_time"></result>
+    </resultMap>
+    <insert id="addUser">
+        insert into user_info (username, password, nickname, add_time, avatar) values (
+        #{userName}, #{password},  #{nickName}, #{addTime}, #{avatar})
+    </insert>
+    <select id="selectUser" resultType="com.lifei.mood.entity.UserInfo">
+        select * from user_info where userName = #{userName}
+    </select>
+    <select id="loginUser" resultType="com.lifei.mood.entity.UserInfo">
+        select * from user_info where userName = #{userName} and password = #{password}
+    </select>
+
+    <select id="userDesc" resultType="com.lifei.mood.entity.UserInfo">
+        select u.desc,u.avatar from user_info u where id = #{userId}
+    </select>
+
+    <update id="updateAvatar">
+        update user_info set avatar=#{avatar} where id=#{id}
+    </update>
+
+    <update id="updateInfo">
+        update user_info set nickname=#{nickname},birthday=#{date1},user_info.desc=#{desc},phone=#{phone},address=#{address},
+        sex=#{gender} where nickname=#{nickname}
+    </update>
+
+    <update id="updatePwd">
+        update user_info set password=#{password} where username=#{userName}
+    </update>
+
+
+
+</mapper>
